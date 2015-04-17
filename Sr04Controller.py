@@ -67,6 +67,23 @@ if __name__ == '__main__':
         exit(0)
 
     print("Running a test:")
-    trigg = raw_input("What pin is the trigger pin?")
-    echo = raw_input("What pin is echo pin?")
+    trigg = raw_input("What pin is the trigger pin? ")
+    echo = raw_input("What pin is echo pin? ")
+
+    #creating a new sr04
+    sensor = Sr04Controller(int(trigg),int(echo))
+    # starting mesauring
+    while True:
+        print("=================")
+        print("Started mesaurement")
+
+        dist = sensor.measure()
+        print("Measured distance: " + str(dist) + "cm");
+        another = raw_input("Do you want to measure again? Y/n : ")
+        if another != "Y":
+            break
+        print("================")
+    #done
+    print("Cleaning up")
+    sensor.cleanup()
     
