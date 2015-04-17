@@ -36,10 +36,10 @@ class Sr04Controller:
 
     def measure(self):
         #wait for sensor to settle
-        time.sleep(SETTLE_TIME)
+        time.sleep(self.SETTLE_TIME)
         #send trigger signal
         io.output(triggPin, 1)
-        time.sleep(TRIGGER_LENGTH)
+        time.sleep(self.TRIGGER_LENGTH)
         io.output(triggPin, 0)
         #start mesaure
         while io.input(echoPin) == 0:
@@ -47,7 +47,7 @@ class Sr04Controller:
         while io.input(echoPin) == 1:
             pulse_end = time.time()
         #calculating distance
-        distance = (SPEED_OF_SOUND / 2) * (pulse_end - pulse_start)
+        distance = (self.SPEED_OF_SOUND / 2) * (pulse_end - pulse_start)
         return round(distance, 2)
 
     def cleanup(self):
