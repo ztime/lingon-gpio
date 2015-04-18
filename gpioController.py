@@ -91,6 +91,7 @@ if __name__ == '__main__':
     except ValueError, e:
         print("OK")
         print(e)
+    t1.cleanup()
     t1 = None
     try:
         print("-------------------------------")
@@ -108,6 +109,8 @@ if __name__ == '__main__':
     except ValueError, e:
         print("OK")
         print(e)
+    t1.cleanup()
+    t2.cleanup()
     t1 = None
     t2 = None
     try:
@@ -125,3 +128,9 @@ if __name__ == '__main__':
     except ValueError, e:
         print("OK")
         print(e)
+    t1.cleanup()
+    t2.cleanup()
+    t1 = None
+    t2 = None
+    print("All tests passed")
+    print("================")
