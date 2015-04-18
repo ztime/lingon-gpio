@@ -19,6 +19,7 @@ class MotorController(GpioController.GpioController):
         elif(direction == self.REVERSE):
             self.direction = self.REVERSE
         else:
+            super(MotorController, self).cleanup()
             raise ValueError('%s not allowed, use "forward" or "reverse"' % direction)
         self.enablePin = enablePin
         self.in1pin = in1pin
@@ -65,9 +66,9 @@ class MotorController(GpioController.GpioController):
         io.output(self.in1pin, 0)
         io.output(self.in2pin, 0)
 
-    def cleanup(self):
-        self.pwm.stop()
-        io.cleanup()
+#    def cleanup(self):
+#        self.pwm.stop()
+#        io.cleanup()
 
     # takes a value from 0 -> 100 and scales it
     # with DEFAULT_MAX
