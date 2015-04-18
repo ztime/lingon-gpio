@@ -1,7 +1,7 @@
 import RPi.GPIO as io
 from sys import exit
 
-class GpioController:
+class GpioController(object):
 
     #constants
     BOARD_MODE=""
