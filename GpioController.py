@@ -1,7 +1,7 @@
 import RPi.GPIO as io
 from sys import exit
 
-class gpioController:
+class GpioController:
 
     #constants
     BOARD_MODE=""
@@ -53,6 +53,7 @@ class gpioController:
                 self.cleanup()
                 raise ValueError('Pin %s is already in use by another device' % pin)
             # Pin is ready to use
+            self.pins.append(pin)
             self.USED_PINS.append(pin)
 
     def cleanup(self):
