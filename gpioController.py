@@ -12,8 +12,12 @@ class gpioController:
     ALLOWED_PINS = []
     USED_PINS = []
     INITIATED = False
+    NO_INSTANCES = 0 
 
     def __init__(self, pins, boardmode="BCM", showWarnings=False):
+        # we created a new instance
+        self.pins = []
+        self.NO_INSTANCES = self.NO_INSTANCES + 1
         #set warnings in io
         if showWarnings is False:
             io.setwarnings(False)
@@ -32,19 +36,32 @@ class gpioController:
                 io.setmode(io.BOARD)
                 self.INITIATED = True
             else:
+                self.cleanup()
                 raise ValueError('%s is not an allowed, use "BCM" or "BOARD"' % boardmode)
         else: #INITIATED == TRUE
             # check that we dont have two conflicting modes
             if(boardmode != self.BOARD_MODE):
+                self.cleanup()
                 raise ValueError('Board mode is already set to %s , cannot use another mode' % self.BOARD_MODE)
         # Check pins
+        # save pins to a local variable for cleanup
         for pin in pins:
             if(pin not in self.ALLOWED_PINS):
+                self.cleanup()
                 raise ValueError('%s is not an allowed pin for %s' % (pin, self.BOARD_MODE))
             if(pin in self.USED_PINS):
+                self.cleanup()
                 raise ValueError('Pin %s is already in use by another device' % pin)
             # Pin is ready to use
             self.USED_PINS.append(pin)
+
+    def cleanup():
+        # cleanup pins so that other things can use it
+        for pin in self.pins:
+            self.USED_PINS.remove(pin)
+        self.NO_INSTANCES = self.NO_INSTANCES - 1
+        if self.NO_INSTANCES == 0:
+            io.cleanup()
 
 # Tests
 if __name__ == '__main__':
