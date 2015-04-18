@@ -55,7 +55,7 @@ class gpioController:
             # Pin is ready to use
             self.USED_PINS.append(pin)
 
-    def cleanup():
+    def cleanup(self):
         # cleanup pins so that other things can use it
         for pin in self.pins:
             self.USED_PINS.remove(pin)
