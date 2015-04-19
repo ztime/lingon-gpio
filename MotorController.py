@@ -9,7 +9,7 @@ class MotorController(GpioController.GpioController):
     FORWARD = "forward"
     REVERSE = "reverse"
     DEFAULT_FREQ = 100
-    DEFAULT_MAX = 40
+    DEFAULT_MAX = 100
 
     def __init__(self, enablePin, in1pin, in2pin, direction="forward", boardmode="BCM"):
         super(MotorController, self).__init__([enablePin,in1pin,in2pin],boardmode)

@@ -1,8 +1,9 @@
 import RPi.GPIO as io
+import GpioController
 import time
 from sys import exit
 
-class Sr04Controller:
+class Sr04Controller(GpioController.GpioController):
     """
     Beware! RasPi gpio cannot handle them 5v from echo pin , so if you use this
     please use a voltage divider to bring it down to 3.3v 
@@ -24,11 +25,8 @@ class Sr04Controller:
     SETTLE_TIME = 2
 
     def __init__(self,triggPin,echoPin,boardmode="BCM"):
-        if boardmode=="BCM":
-            io.setmode(io.BCM)
-        else:
-            io.setmode(io.BOARD)
-        io.setwarnings(False)
+        # call super class
+        super(Sr04Controller, self).__init__([triggPin,echoPin],boardmode)
         # setup pins
         io.setup(triggPin,io.OUT)
         io.setup(echoPin,io.IN)
@@ -53,8 +51,8 @@ class Sr04Controller:
         distance = (self.SPEED_OF_SOUND / 2) * (pulse_end - pulse_start)
         return round(distance, 2)
 
-    def cleanup(self):
-        io.cleanup()
+#    def cleanup(self):
+#        io.cleanup()
         
 if __name__ == '__main__':
     print("========== SR-04 Controller ==============================")
