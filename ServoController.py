@@ -83,5 +83,8 @@ class ServoController(GpioController.GpioController):
         self._pwm.ChangeDutyCycle(self._currentDirection)
 
     def _convertDegrees(degrees):
-        #todo 
-        return degrees
+        k = (self.ANGLE_180 - self.ANGLE_ZERO) / (self.DEGREE_180 - self.DEGREE_ZERO)
+        #y = kx + m
+        returnValue = ( k * degress ) + self.ANGLE_ZERO
+        return returnValue
+
