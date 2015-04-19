@@ -65,8 +65,23 @@ class ServoController(GpioController.GpioController):
             absDegrees = abs(degrees)
             if degrees < 0:
                 newDeg = self._currentDirectionDegrees - absDegrees
-                
-
+            else:
+                newDeg = self._currentDirectionDegrees + absDegrees
+            if newDeg < 0:
+                newDeg = 0
+            elif newDeg > 180:
+                newDeg = 180
+            convDeg = self._convertDegrees(newDeg)
+            self._currentDirection = convDeg
+            self._currentDirectionDegrees = newDeg
+            self._updateAngle()
+    
+    def getDegrees():
+        return self._currentDirectionDegrees
 
     def _updateAngle():
         self._pwm.ChangeDutyCycle(self._currentDirection)
+
+    def _convertDegrees(degrees):
+        #todo 
+        return degrees
