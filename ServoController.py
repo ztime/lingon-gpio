@@ -1,4 +1,5 @@
-import RPi.GPIO as io
+# import RPi.GPIO as io
+from RPRIO import PWM
 import GpioController
 import time
 from sys import exit
@@ -9,19 +10,21 @@ class ServoController(GpioController.GpioController):
    """
 
    #constants
-    DEFAULT_FREQ = 50
-    ANGLE_NEUTRAL=7.5
+    # DEFAULT_FREQ = 50
+    ANGLE_NEUTRAL=1600
     DEGREE_NEUTRAL=90
-    ANGLE_ZERO=2.5
+    ANGLE_ZERO=700
     DEGREE_ZERO = 0
-    ANGLE_180=12.5
+    ANGLE_180=2500
     DEGREE_180 = 180
 
     def __init__(self,controllPin,directStart=True,boardmode="BCM"):
         super(ServoController, self).__init__([controllPin], boardmode)
         # Setup
-        io.setup(controllPin, io.OUT)
-        self._pwm = io.PWM(controllPin, self.DEFAULT_FREQ)
+        # io.setup(controllPin, io.OUT)
+        self._servo = PWM.Servo() 
+        self._pin = controllPin
+        # self._pwm = io.PWM(controllPin, self.DEFAULT_FREQ)
         self._currentDirection = self.ANGLE_NEUTRAL
         self._currentDirectionDegrees = self.DEGREE_NEUTRAL 
         self._running = False
@@ -30,12 +33,14 @@ class ServoController(GpioController.GpioController):
 
     def start(self):
         if self._running is False:
-            self._pwm.start(self._currentDirection)
+            # self._pwm.start(self._currentDirection)
+            self._servo.set_servo(self._pin, self._currentDirection)
             self._running = True
 
     def stop(self):
         if self._running is True:
-            self._pwm.stop()
+            # self._pwm.stop()
+            self._servo.stop_servo(self._pin)
             self._running = False
 
     def rotateToNeutral(self):
@@ -84,7 +89,8 @@ class ServoController(GpioController.GpioController):
         return self._running
 
     def _updateAngle(self):
-        self._pwm.ChangeDutyCycle(self._currentDirection)
+        # self._pwm.ChangeDutyCycle(self._currentDirection)
+        self._servo.set_servo(self._pin, self._currentDirection)
 
     def _convertDegrees(self,degrees):
         k = (self.ANGLE_180 - self.ANGLE_ZERO) / (self.DEGREE_180 - self.DEGREE_ZERO)
