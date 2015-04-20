@@ -1,5 +1,5 @@
-# import RPi.GPIO as io
-from RPRIO import PWM
+import RPIO as io
+from RPIO import PWM
 import GpioController
 import time
 from sys import exit
@@ -21,6 +21,7 @@ class ServoController(GpioController.GpioController):
     def __init__(self,controllPin,directStart=True,boardmode="BCM"):
         super(ServoController, self).__init__([controllPin], boardmode)
         # Setup
+        io.setwarnings(False)
         # io.setup(controllPin, io.OUT)
         self._servo = PWM.Servo() 
         self._pin = controllPin
